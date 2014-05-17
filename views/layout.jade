@@ -5,15 +5,7 @@ html
     link(rel='stylesheet', href='/bootstrap/dist/css/bootstrap.min.css')
     link(rel='stylesheet', href='/stylesheets/style.css')
   body
-      .menu
-        nav
-            ul
-                li
-                    a(href='#' title='Hydropool') Hydropool
-                li
-                    a(href='#' title="Alzheimer's Society of Canada") Alzheimers Society of Canada
-                li
-                    a(href='#' title='Haier') Haier
+      include shared/_nav
 
       section.content-primary
         .navbar.navbar-default.nvarbar-static-top(role='navigation')
