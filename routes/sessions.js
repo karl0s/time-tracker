@@ -4,6 +4,9 @@ var router = express.Router();
 var sa = require('superagent');
 
 router.post('/', function(req, res){
+    req.session.user = null;
+    req.session.is_valid = false;
+
     var base_url = 'https://api.assembla.com/v1/';
 
     var api_key = req.body.api_key;
@@ -22,6 +25,8 @@ router.post('/', function(req, res){
                 return res.send(500, response.body.error_description);
             }
 
+            req.session.user = response.body;
+            req.session.is_valid = true;
             return res.json(response.body);
         });
 });
