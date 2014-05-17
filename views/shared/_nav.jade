@@ -4,5 +4,5 @@
         ul
             if spaces
                 - each space in spaces
-                    li
+                    li.nav-link
                         a(href='/spaces/#{space.id}' title='#{space.name}')= space.name
