@@ -26,6 +26,8 @@ router.post('/', function(req, res){
             }
 
             req.session.user = response.body;
+            req.session.user.api_key = api_key;
+            req.session.user.api_secret = api_secret;
             req.session.is_valid = true;
             req.session.notification = {
                 type: 'success',

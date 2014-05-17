@@ -11,6 +11,8 @@ var users = require('./routes/users');
 var sessions = require('./routes/sessions');
 var dashboard = require('./routes/dashboard');
 
+var sa = require('superagent');
+
 var app = express();
 
 // view engine setup
@@ -41,6 +43,25 @@ app.use(function(req, res, next){
    }
 
     next();
+});
+
+app.use(function(req, res, next){
+   if(req.session && req.session.is_valid){
+       var base_url = 'https://api.assembla.com/v1/';
+       sa.get(base_url + 'spaces.json')
+           .set('X-Api-Key', req.session.user.api_key)
+           .set('X-Api-Secret', req.session.user.api_secret)
+           .end(function(err, response){
+               if(!err){
+                   res.locals.spaces = response.body;
+               }
+               console.log(response);
+
+               next();
+           });
+   }else{
+       next();
+   }
 });
 
 app.use('/', routes);

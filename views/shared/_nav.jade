@@ -2,9 +2,7 @@
     h2 Select a space
     nav
         ul
-            li
-                a(href='#' title='Hydropool') Hydropool
-            li
-                a(href='#' title="Alzheimer's Society of Canada") Alzheimers Society of Canada
-            li
-                a(href='#' title='Haier') Haier
+            if spaces
+                - each space in spaces
+                    li
+                        a(href='/space/#{space.id}' title='#{space.name}')= space.name
