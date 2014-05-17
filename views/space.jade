@@ -2,8 +2,10 @@ extends layout
 block content
     h2.text-center Select a Ticket
     ul.list-group
-        if spaces
+        if tickets.length
             - each ticket in tickets
                 li.list-group-item
                     a(href='/spaces/#{space_id}/tickets/#{ticket.id}' title='Work on Ticket')= ticket.summary
                         span.pull-right >
+        else
+            h4.text-center There are no tickets assigned to you for this space

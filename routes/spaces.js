@@ -16,7 +16,13 @@ router.get('/:id', function(req, res){
             if(err)return res.send(500, err);
 
             console.log(response.body);
-            return res.render('space', { space_id: req.params.id, tickets: response.body });
+
+            var tickets = response.body;
+            tickets = tickets.filter(function(ticket){
+               return ticket.space_id == req.params.id;
+            });
+
+            return res.render('space', { space_id: req.params.id, tickets: tickets });
         });
 });
 
@@ -33,6 +39,7 @@ router.get('/:id/tickets/:ticket_id', function(req, res){
             if(err)return res.send(500, err);
 
             console.log(response.body);
+
             return res.render('ticket', { space_id: req.params.id, ticket: response.body });
         });
 });
