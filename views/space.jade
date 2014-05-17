@@ -1,0 +1,9 @@
+extends layout
+block content
+    h2.text-center Select a Ticket
+    ul.list-group
+        if spaces
+            - each ticket in tickets
+                li.list-group-item
+                    a(href='/spaces/#{space_id}/tickets/#{ticket.id}' title='Work on Ticket')= ticket.summary
+                        span.pull-right >

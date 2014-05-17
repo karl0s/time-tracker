@@ -10,6 +10,7 @@ var routes = require('./routes/index');
 var users = require('./routes/users');
 var sessions = require('./routes/sessions');
 var dashboard = require('./routes/dashboard');
+var spaces = require('./routes/spaces');
 
 var sa = require('superagent');
 
@@ -68,6 +69,7 @@ app.use('/', routes);
 app.use('/users', users);
 app.use('/sessions', sessions);
 app.use('/dashboard', dashboard);
+app.use('/spaces', spaces);
 
 /// catch 404 and forward to error handler
 app.use(function(req, res, next) {
