@@ -1,10 +1,12 @@
 extends layout
 
 block content
-    h1 hi
+    h2.text-center Select a Space
+    ul.list-group
+        if spaces
+            - each space in spaces
+                li.list-group-item
+                    a(href='/space/#{space.id}' title='#{space.name}')= space.name
+                        span.pull-right >
 
 block js
-    script.
-        $(function(){
-
-        });
