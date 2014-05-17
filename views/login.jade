@@ -1,6 +1,6 @@
 extends layout.jade
 block content
-    form.form-signin(role='form')
+    form.form-signin(role='form', action='/sessions', method='post')
         h2.text-center Please sign in&nbsp;
             small Visit&nbsp;
                 a(href='https://www.assembla.com/user/edit/manage_clients', target='_blank') Assembla Client Manager for Details
@@ -9,3 +9,54 @@ block content
         button.btn.btn-lg.btn-primary.btn-block(type='submit') Sign in
 
     .alert.alert-warning This service does not persist any information obtained from you or from Assembla on your behalf. <strong>There is no database.</strong> We keep an active session open in order to facilitate the communication between you and Assembla. Once you close the browser, or logout, the session is lost.
+
+    #login-modal.modal.fade
+        .modal-dialog
+            .modal-content
+                .modal-header
+                    h4 Signing in...
+                .modal-body
+                    p#login-content We're verifying your account with Assembla, please wait...
+                .modal-footer
+
+block js
+    script.
+        $(function(){
+            $('form.form-signin').submit(function(e){
+                e.preventDefault();
+
+                $('#failed-notification').removeClass('in');
+
+                $('#login-modal').modal({
+                    show: true,
+                    keyboard: false
+                });
+
+                var method = $(this).attr('method');
+                var action = $(this).attr('action');
+
+                $.ajax({
+                    url: action,
+                    method: method,
+                    data: {
+                        api_key: $('#api_key').val(),
+                        api_secret: $('#api_secret').val()
+                    }
+                })
+                .done(function(data){
+                    location.href = '/dashboard';
+                })
+                .fail(function(data){
+                    $('#failed-notification').addClass('in');
+                    $('#failed-notification > strong').html('Authentication failed');
+                    $('#failed-notification > p').html(data.responseText);
+                    $('#login-modal').modal('hide');
+                })
+                .always(function(){
+                    console.log('always');
+
+                });
+
+                return false;
+            });
+        });
