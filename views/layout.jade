@@ -21,6 +21,13 @@ html
                 #failed-notification.alert.alert-danger.fade
                     strong Title
                     p Content
+                #success-notification.alert.alert-success.fade
+                    strong Title
+                    p Content
+                if notification
+                    .alert.fade.in(class="alert-" + notification.type)
+                        strong= notification.title
+                        p= notification.msg
                 block content
 
         script(type='text/javascript', src='/jquery/dist/jquery.min.js')
@@ -35,6 +42,11 @@ html
                 $('.navbar-toggle').click(function(){
                     $('.content-primary').toggleClass('active');
                 });
+
+                var notifications = $('.alert.in');
+                setTimeout(function(){
+                    notifications.fadeOut();
+                }, 2500);
             });
         block js
         script(src='//localhost:35729/livereload.js')

@@ -31,13 +31,16 @@ app.use(function(req, res, next){
    if(req.session && req.session.is_valid){
        res.locals.user = req.session.user;
        res.locals.is_valid = true;
-
-       next();
    }else{
        res.locals.is_valid = false;
-
-       next();
    }
+
+   if(req.session.notification){
+       res.locals.notification = req.session.notification;
+       req.session.notification = null;
+   }
+
+    next();
 });
 
 app.use('/', routes);

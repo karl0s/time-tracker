@@ -27,6 +27,11 @@ router.post('/', function(req, res){
 
             req.session.user = response.body;
             req.session.is_valid = true;
+            req.session.notification = {
+                type: 'success',
+                title: 'Welcome',
+                msg: response.body.name
+            };
             return res.json(response.body);
         });
 });
