@@ -1,8 +1,71 @@
-body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+html {
+  height: 100%;
 }
 
-a {
-  color: #00B7FF;
+body {
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+
+  background: #000;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+.menu {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  color: #fff;
+}
+
+.content-primary {
+  -webkit-transition:all .2s linear;
+  -webkit-transform: translate3d(0,0,0);
+  background: #fff;
+  height: 100%;
+}
+
+.content-primary.active{
+  -webkit-transform: translate3d(77.5%,0,0);
+}
+
+.navbar-toggle {
+  float: left;
+  margin-right: 0;
+  margin-left: 15px;
+  margin-bottom: 8px;
+}
+
+.form-signin {
+
+  .form-control:focus {
+    z-index: 2;
+  }
+
+  input[type="email"] {
+    margin-bottom: -1px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+
+  input[type="password"] {
+    margin-bottom: 10px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+  }
+}
+
+.tasks {
+  li a {
+    border-top: 1px solid #ccc;
+    display: block;
+    padding: 8px;
+    margin-right: -15px;
+    margin-left: -15px;
+  }
+
+  li:last-child a {
+    border-bottom: 1px solid #ccc;
+  }
 }
