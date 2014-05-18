@@ -4,5 +4,73 @@ block content
         span.label.label-default= ticket.summary
     small Due: not implemented yet
     p!= ticket.description.replace(/\n/gmi, '<br />')
-    button.btn.btn-lg.btn-success.btn-block(type='submit', data-toggle='modal', data-target='#time-modal') Start Timer
+    button#timer.btn.btn-lg.btn-success.btn-block(type='button', data-toggle='modal', data-target='#time-modal') Start Timer
+    #duration-container.alert.alert-info.fade.text-center
+        span Duration:
+        span#duration -- pending --
+
+    form#time-entry(action='', method='post')
+        input#hours(name="hours", type="number")
+        input#start_date(name="start_date")
+
+
+block js
+    script(type='text/javascript', src='/moment/min/moment.min.js')
+    script.
+        $(function(){
+            var _recording = false;
+            var _startDate = null;
+            var _endDate = null;
+
+            var _container = $('#duration-container');
+            var _duration = $('#duration');
+            var _handle = null;
+
+            $('#timer').click(function(){
+                if(!_recording){
+                    // start recording
+                    $(this).html('Stop Timer').removeClass('btn-success').addClass('btn-danger');
+
+                    _startDate = moment();
+                    _endDate = null;
+
+                    _container.addClass('in');
+
+                    _handle = setInterval(function(){
+                        var _diff = moment() - _startDate;
+
+                        _duration.html(moment.duration(_diff).humanize(false));
+
+                    }, 1000);
+                }else{
+                    // stop recording | show modal
+                    $(this).html('Start Timer').removeClass('btn-danger').addClass('btn-success');
+                    clearInterval(_handle);
+                    _handle = null;
+                    _container.removeClass('in');
+
+
+                    var diff = moment.duration(moment() - _startDate);
+                    var hours = diff.hours();
+                    var minutes = diff.minutes();
+                    var seconds = diff.seconds();
+
+                    var totalHours = diff.asHours();
+                    if(totalHours < 1){
+                        if(totalHours < 0.5){
+                            totalHours = 0.5;
+                        }else{
+                            totalHours = 1;
+                        }
+                    }
+
+                    $('#start_date').val(_startDate);
+                    $('#hours').val(totalHours);
+
+                    $('#time-entry').submit();
+                }
+
+                _recording =!_recording;
+            });
+        });
 
