@@ -69,7 +69,7 @@ router.post('/:id/tickets/:ticket_id', function(req, res){
         .send({ 'user_task': {
                 'user_id': req.session.user.id,
                 'space_id': req.params.id,
-                'description': 'auto added time',
+                'description': req.body.description,
                 'hours': req.body.hours,
                 'begin_at': moment(req.body.start_date).toJSON(),
                 'end_at': moment().toJSON(),

@@ -4,15 +4,32 @@ block content
         span.label.label-default= ticket.summary
     small Due: not implemented yet
     p!= ticket.description.replace(/\n/gmi, '<br />')
-    button#timer.btn.btn-lg.btn-success.btn-block(type='button', data-toggle='modal', data-target='#time-modal') Start Timer
+    button#timer.btn.btn-lg.btn-success.btn-block(type='button') Start Timer
     #duration-container.alert.alert-info.fade.text-center
         span Duration:
         span#duration -- pending --
 
-    form#time-entry(action='', method='post')
-        input#hours(name="hours", type="number")
-        input#start_date(name="start_date")
 
+
+    #time-modal.modal.fade
+        .modal-dialog
+            .modal-content
+                .modal-header
+                    button.close(type='button', data-dismiss='modal', aria-hidden='true') &times;
+                    h4.modal-title Save Time Entry
+                .modal-body
+                    form#time-entry(action='', method='post', role='form')
+                        .form-group
+                            label.control-label Hours:
+                            input.form-control#hours(name="hours", type="number")
+                        .form-group
+                            label.control-label Description of Work:
+                            textarea#description.form-control(name="description", rows="5")
+
+                        input.hide#start_date(name="start_date")
+                .modal-footer
+                    button.btn.btn-default(type='button', data-dismiss='modal') Cancel
+                    button#submit.btn.btn-primary(type='button') Submit
 
 block js
     script(type='text/javascript', src='/moment/min/moment.min.js')
@@ -25,6 +42,16 @@ block js
             var _container = $('#duration-container');
             var _duration = $('#duration');
             var _handle = null;
+
+            $('#time-modal').on('show.bs.modal', function(){
+                $('#description').val('');
+            }).on('shown.bs.modal', function(){
+                $('#description').focus();
+            });
+
+            $('#submit').click(function(){
+               $('#time-entry').submit();
+           });
 
             $('#timer').click(function(){
                 if(!_recording){
@@ -49,7 +76,6 @@ block js
                     _handle = null;
                     _container.removeClass('in');
 
-
                     var diff = moment.duration(moment() - _startDate);
                     var hours = diff.hours();
                     var minutes = diff.minutes();
@@ -67,7 +93,11 @@ block js
                     $('#start_date').val(_startDate);
                     $('#hours').val(totalHours);
 
-                    $('#time-entry').submit();
+                    $('#time-modal').modal({
+                        show: true,
+                        backdrop: false,
+                        keyboard: true
+                    });
                 }
 
                 _recording =!_recording;
