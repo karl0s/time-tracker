@@ -31,6 +31,8 @@ app.use(express.static(path.join(__dirname, '/bower_components')));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(function(req, res, next){
+   res.locals.title = 'Mana';
+
    if(req.session && req.session.is_valid){
        res.locals.user = req.session.user;
        res.locals.is_valid = true;

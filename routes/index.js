@@ -7,7 +7,7 @@ router.get('/', function(req, res) {
         return res.redirect('/dashboard');
     }
 
-    return res.render('login', { title: 'Express' });
+    return res.render('login');
 });
 
 module.exports = router;
