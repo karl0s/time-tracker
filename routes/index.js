@@ -20,7 +20,48 @@ router.get('/', function(req, res) {
 });
 
 router.get('/calendar', function(req, res){
-   return res.render('calendar', { api_key: req.session.user.api_key, api_secret: req.session.user.api_secret });
+    var base_url = 'https://api.assembla.com/v1/';
+
+    var api_key = req.session.user.api_key;
+    var api_secret = req.session.user.api_secret;
+
+    sa.get(base_url + '/spaces')
+        .set('X-Api-Key', api_key)
+        .set('X-Api-Secret', api_secret)
+        .end(function(err, response){
+            var spaces = response.body;
+
+            sa.get(base_url + '/spaces/' + spaces[0].id + '/tickets/my_active.json')
+                .set('X-Api-Key', api_key)
+                .set('X-Api-Secret', api_secret)
+                .end(function(err, response){
+                    if(err)return res.send(500, err);
+
+                    var tickets = response.body;
+                    var events = [];
+
+                    tickets.forEach(function(ticket){
+                        if(ticket.custom_fields && ticket.custom_fields["Due Date"]) {
+                            var start_date = moment(ticket.custom_fields["Due Date"]);
+                            var end_date = start_date.add('h', 1);
+
+                            events.push({
+                                title: ticket.summary,
+                                id: ticket.id,
+                                start: start_date.toDate(),
+                                end: end_date.toDate(),
+                                url: 'https://assembla.com/spaces/' + ticket.space_id + '/tickets/' + ticket.number
+                            });
+                        }
+                    });
+
+                    return res.render('calendar', {
+                        events: events,
+                        api_key: api_key,
+                        api_secret: api_secret
+                    });
+                });
+        });
 });
 
 router.get('/calendar/:key/:secret', function(req, res){

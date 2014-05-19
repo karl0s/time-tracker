@@ -7,3 +7,29 @@ block content
     p
         strong
             a(href='http://mana.io/calendar/' + api_key + '/' + api_secret, title='Personal Calendar') http://mana.io/calendar/#{api_key}/#{api_secret}
+    #calendar
+block styles
+    link(rel='stylesheet', href='/fullcalendar/fullcalendar.css')
+
+block js
+    script(type='text/javascript', src='/jqueryui/ui/jquery-ui.js')
+    script(type='text/javascript', src='/jqueryui/ui/jquery.ui.draggable.js')
+    script(type='text/javascript', src='/fullcalendar/fullcalendar.js')
+    script.
+        $(function(){
+            var events = !{JSON.stringify(events)};
+            var date = new Date();
+            var d = date.getDate();
+            var m = date.getMonth();
+            var y = date.getFullYear();
+
+            $('#calendar').fullCalendar({
+                header: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'month,agendaWeek,agendaDay'
+                },
+                editable: true,
+                events: events
+        });
+        });
