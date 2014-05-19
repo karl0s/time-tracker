@@ -44,14 +44,15 @@ router.get('/calendar/:key/:secret', function(req, res){
                     if(err)return res.send(500, err);
 
                     var tickets = response.body;
+
                     var ical = require('icalendar');
                     var cal = new ical.iCalendar();
 
                     tickets.forEach(function(ticket){
                         if(ticket.custom_fields && ticket.custom_fields["Due Date"]) {
                             var event = new ical.VEvent(ticket.id);
-                            event.setSummary(ticket.summary);
-                            event.setDescription(ticket.description);
+                            event.setSummary('#' + ticket.number + ' - ' + ticket.summary);
+                            event.setDescription('https://assembla.com/spaces/' + ticket.space_id + '/tickets/' + ticket.number + ' - ' + ticket.description);
 
                             var dueDate = moment(ticket.custom_fields["Due Date"]);
                             event.setDate(dueDate.toJSON(), 60*60);
