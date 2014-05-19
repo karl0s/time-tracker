@@ -24,7 +24,7 @@ app.use(favicon());
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
-app.use(cookieParser());
+app.use(cookieParser('123-321-111-222-333'));
 app.use(session({ secret: 'some-random-12345-54321-string' }));
 app.use(require('less-middleware')(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, '/bower_components')));

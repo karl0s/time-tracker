@@ -1,0 +1,10 @@
+extends layout
+block content
+    h2 Authorize Device
+    p.lead Temporarily authorize another device to access your account. It's much easier to type in the PIN code below on your mobile device then it is to enter your Assembla api keys.
+    p Go to <kbd>http://mana.io/pin</kbd> on your device and enter the PIN code found below. It will temporarily sync the device to your account.
+    p
+     small <em>You have 2 minutes to enter this code before it expires.</em>
+
+    h3 PIN CODE: #{code}
+    br

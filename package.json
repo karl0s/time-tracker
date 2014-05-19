@@ -16,7 +16,8 @@
     "less-middleware": "1.0.x",
     "superagent": "~0.18.0",
     "express-session": "~1.1.0",
-    "moment": "~2.6.0"
+    "moment": "~2.6.0",
+    "memory-cache": "0.0.5"
   },
   "devDependencies": {
     "grunt-contrib-watch": "~0.6.1",

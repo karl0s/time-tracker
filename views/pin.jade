@@ -1,0 +1,12 @@
+extends layout
+block content
+    h2 Authorize Device
+    p.lead Enter your PIN to temporarily authorize this device to use your assembla API keys.
+    p
+        em
+            small (cookies must be enabled on your device for this to work)
+    form#pin-form(action='/pin', method='POST')
+        .form-group
+            label.control-label PIN:
+            input.form-control#pin(type='number', placeholder='Enter your PIN', name='pin')
+        button.btn.btn-lg.btn-success(type='submit') Grant Access
