@@ -128,7 +128,7 @@ router.post('/pin', function(req, res){
         title: 'Device Authorized'
     };
 
-    res.cookie('user', user);
+    res.cookie('user', user, { mageAge: 10000 });
 
     cache.del(pin);
 
