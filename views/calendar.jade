@@ -1,0 +1,6 @@
+extends layout
+block content
+    h2 Personal Calendar
+    p.lead Because Assembla does not yet provide the ability to export a calendar based on tickets (tickets do not have an offical `due date` either), only for milestones, we've created one for you.
+    p To access your personalized ticket calendar in iCal format (can import into google too), use the following link:
+        a(href='http://mana.io/calendar/' + api_key + '/' + api_secret, title='Personal Calendar') http://mana.io/calendar/#{api_key}/#{api_secret}

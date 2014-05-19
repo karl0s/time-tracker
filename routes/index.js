@@ -2,6 +2,8 @@ var express = require('express');
 var router = express.Router();
 var cache = require('memory-cache');
 
+var sa = require('superagent');
+
 /* GET home page. */
 router.get('/', function(req, res) {
     if(req.cookies.user){
@@ -14,6 +16,44 @@ router.get('/', function(req, res) {
     }
 
     return res.render('login');
+});
+
+router.get('/calendar', function(req, res){
+   return res.render('calendar', { api_key: req.session.user.api_key, api_secret: req.session.user.api_secret });
+});
+
+router.get('/calendar/:key/:secret', function(req, res){
+    if(!req.params.key || !req.params.secret)return res.send(500, 'missing key or secret');
+
+    var base_url = 'https://api.assembla.com/v1/';
+
+    var api_key = req.params.key;
+    var api_secret = req.params.secret;
+
+    sa.get(base_url + '/spaces')
+        .set('X-Api-Key', api_key)
+        .set('X-Api-Secret', api_secret)
+        .end(function(err, response){
+            var spaces = response.body;
+
+            sa.get(base_url + '/spaces/' + spaces[0].id + '/tickets/my_active.json')
+                .set('X-Api-Key', api_key)
+                .set('X-Api-Secret', api_secret)
+                .end(function(err, response){
+                    if(err)return res.send(500, err);
+
+                    var tickets = response.body;
+
+
+                    var cal = require('icalendar');
+                    var event = new cal.VEvent('1234');
+                    event.setSummary('hi..');
+                    event.setDate(Date.now(), Date.now());
+
+                    res.setHeader('Content-type', 'text/calendar; charset=utf-8');
+                    return res.send(event.toString());
+                });
+        });
 });
 
 router.get('/pin', function(req, res){
