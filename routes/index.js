@@ -47,6 +47,7 @@ router.get('/calendar/:key/:secret', function(req, res){
 
                     var ical = require('icalendar');
                     var cal = new ical.iCalendar();
+                    cal.addProperty('X-WR-CALNAME;VALUE=TEXT', 'Mana.io Tasks');
 
                     tickets.forEach(function(ticket){
                         if(ticket.custom_fields && ticket.custom_fields["Due Date"]) {
@@ -61,6 +62,7 @@ router.get('/calendar/:key/:secret', function(req, res){
                         }
                     });
 
+                    return res.send(cal.toString());
                     res.setHeader('Content-type', 'text/calendar; charset=utf-8');
                     return res.send(cal.toString());
                 });
