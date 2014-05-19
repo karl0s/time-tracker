@@ -18,7 +18,13 @@ html
                             span.icon-bar
                             span.icon-bar
                         a.navbar-brand(href='/', title='Mana') Mana
-                    a#authorize-device.pull-right(href='/authorize', title='Authorize') Authorize Device
+                    nav.auth.pull-right
+                        ul.list-inline
+                            li
+                                a(href='/authorize', title='Authorize') Authorize Device
+                            li.divider
+                            li
+                                a(href='/calendar', title='Calendar') Export iCal
             .container
                 #failed-notification.alert.alert-danger.fade
                     strong Title
