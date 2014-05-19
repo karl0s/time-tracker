@@ -3,6 +3,7 @@ var router = express.Router();
 var cache = require('memory-cache');
 
 var sa = require('superagent');
+var moment = require('moment');
 
 /* GET home page. */
 router.get('/', function(req, res) {
@@ -43,15 +44,24 @@ router.get('/calendar/:key/:secret', function(req, res){
                     if(err)return res.send(500, err);
 
                     var tickets = response.body;
+                    var ical = require('icalendar');
+                    var cal = new ical.iCalendar();
 
+                    tickets.forEach(function(ticket){
+                        if(ticket.custom_fields && ticket.custom_fields["Due Date"]) {
+                            var event = new ical.VEvent(ticket.id);
+                            event.setSummary(ticket.summary);
+                            event.setDescription(ticket.description);
 
-                    var cal = require('icalendar');
-                    var event = new cal.VEvent('1234');
-                    event.setSummary('hi..');
-                    event.setDate(Date.now(), Date.now());
+                            var dueDate = moment(ticket.custom_fields["Due Date"]);
+                            event.setDate(dueDate.toJSON(), 60*60);
+
+                            cal.addComponent(event);
+                        }
+                    });
 
                     res.setHeader('Content-type', 'text/calendar; charset=utf-8');
-                    return res.send(event.toString());
+                    return res.send(cal.toString());
                 });
         });
 });
